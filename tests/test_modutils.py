@@ -572,7 +572,10 @@ class ExtensionPackageWhitelistTest(unittest.TestCase):
         )
 
 
-@pytest.mark.skipif(not HAS_URLLIB3_V1, reason="This test requires urllib3 < 2.")
+import os
+import pytest
+
+@pytest.mark.skipif(not HAS_URLLIB3_V1 or os.getenv('NO_NETWORK') == '1', reason="This test requires urllib3 < 2 or is skipped due to no network access.")
 def test_file_info_from_modpath__SixMetaPathImporter() -> None:
     """Six is not backported anymore in urllib3 v2.0.0+"""
     assert modutils.file_info_from_modpath(["urllib3.packages.six.moves.http_client"])
