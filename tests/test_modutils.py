@@ -23,6 +23,12 @@ from astroid import modutils
 from astroid.const import PY310_PLUS
 from astroid.interpreter._import import spec
 
+try:
+    import pip
+    HAS_PIP = True
+except ImportError:
+    HAS_PIP = False
+
 from . import resources
 
 try:
