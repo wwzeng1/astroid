@@ -16,6 +16,12 @@ import pytest
 
 import astroid
 from astroid import manager, test_utils
+
+try:
+    import pip
+    HAS_PIP = True
+except ImportError:
+    HAS_PIP = False
 from astroid.const import IS_JYTHON, IS_PYPY
 from astroid.exceptions import (
     AstroidBuildingError,
@@ -393,6 +399,8 @@ class AstroidManagerTest(
 
 class IsolatedAstroidManagerTest(resources.AstroidCacheSetupMixin, unittest.TestCase):
     def test_no_user_warning(self):
+        if not HAS_PIP:
+            pytest.skip("pip is not available in this environment")
         mgr = manager.AstroidManager()
         with warnings.catch_warnings():
             warnings.filterwarnings("error", category=UserWarning)
